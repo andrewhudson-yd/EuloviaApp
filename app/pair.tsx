@@ -1,10 +1,10 @@
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
-import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { parsePairingLink } from '../src/core/pairing';
 import { useApp } from '../src/ui/AppState';
-import { Button, Card, Notice, Screen } from '../src/ui/components';
+import { Brand, Button, Card, Notice, Screen } from '../src/ui/components';
 import { colours, space, type } from '../src/ui/theme';
 
 /** Scan the QR code from Settings → Companion app, or type the server and code. */
@@ -48,10 +48,8 @@ export default function Pair() {
 
     return (
         <Screen>
-            <View style={styles.brand}>
-                <Image source={require('../assets/logo.png')} style={styles.logo} accessible={false} />
-                <Text accessibilityRole="header" style={type.title}>Eulovia Companion</Text>
-            </View>
+            <Brand />
+            <View style={{ gap: space.s }}><Text accessibilityRole="header" style={type.title}>Be present. Capture what matters.</Text><Text style={type.small}>Connect your phone to your practice to begin.</Text></View>
             <Text style={type.body}>
                 On your computer, open your account and go to Settings → Companion app → “Show a pairing code”. Then scan it here.
             </Text>
@@ -76,7 +74,7 @@ export default function Pair() {
                     />
                 </View>
             ) : (
-                <Button label="Scan the pairing code" onPress={startScanning} busy={busy} />
+                <Button label="Scan the pairing code" icon="link" onPress={startScanning} busy={busy} />
             )}
             {error && <Notice tone="error">{error}</Notice>}
             <Card>

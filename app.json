@@ -9,6 +9,7 @@
     "userInterfaceStyle": "light",
     "backgroundColor": "#F8F6F2",
     "ios": {
+      "icon": "./assets/icon.png",
       "bundleIdentifier": "com.example.celebrantcompanion",
       "supportsTablet": false,
       "config": { "usesNonExemptEncryption": false },
@@ -18,6 +19,11 @@
       }
     },
     "android": {
+      "icon": "./assets/icon.png",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#344F49"
+      },
       "package": "com.example.celebrantcompanion",
       "allowBackup": false,
       "blockedPermissions": ["android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE"]

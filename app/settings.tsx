@@ -2,7 +2,7 @@ import * as Application from 'expo-application';
 import { router } from 'expo-router';
 import { Alert, Text } from 'react-native';
 import { useApp, useQueue } from '../src/ui/AppState';
-import { Button, Card, Screen } from '../src/ui/components';
+import { Button, Card, Icon, Screen } from '../src/ui/components';
 import { type } from '../src/ui/theme';
 
 export default function Settings() {
@@ -22,8 +22,10 @@ export default function Settings() {
     }
 
     return (
-        <Screen>
+        <Screen navigation="settings">
+            <Text style={type.title} accessibilityRole="header">Settings</Text>
             <Card>
+                <Icon name="folder" size={30} />
                 <Text style={type.heading}>{profile?.practice.name ?? 'Your practice'}</Text>
                 <Text style={type.body}>Signed in as {profile?.user.name ?? '…'}</Text>
                 <Text style={type.small}>This phone: {profile?.device.name ?? '…'}</Text>

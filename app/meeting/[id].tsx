@@ -1,7 +1,7 @@
 import { requestRecordingPermissionsAsync } from 'expo-audio';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
-import { Pressable, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 import { CONSENT_SCRIPT_VERSION, consentProblems, consentScript } from '../../src/core/consent';
 import type { Attendee, MeetingItem } from '../../src/core/types';
 import { expoStore } from '../../src/platform/files';
@@ -63,8 +63,13 @@ export default function Meeting() {
 
     return (
         <Screen>
+            <View style={styles.intro}>
+                <Image source={require('../../assets/brand-mark.png')} style={{ width: 48, height: 60 }} accessible={false} />
+                <Text style={type.title} accessibilityRole="header">Before you record</Text>
+                <Text style={[type.body, { textAlign: 'center', color: colours.muted }]}>Make space for the conversation. First, make sure everyone is happy to be recorded.</Text>
+            </View>
             <View style={{ gap: space.xs }}>
-                <Text accessibilityRole="header" style={type.title}>{meeting.funeral.name ?? 'Family meeting'}</Text>
+                <Text accessibilityRole="header" style={type.heading}>{meeting.funeral.name ?? 'Family meeting'}</Text>
                 <Text style={type.small}>
                     {new Date(`${meeting.local_date}T12:00:00`).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' })}
                     {meeting.local_time ? `, ${meeting.local_time}` : ''}{meeting.location ? ` · ${meeting.location}` : ''}
@@ -104,20 +109,22 @@ export default function Meeting() {
                 </View>
             </Card>
 
-            <View style={styles.row}>
+            <View style={[styles.row, styles.confirmation]}>
                 <Switch accessibilityLabel="Everyone present has agreed to this meeting being recorded" value={confirmed} onValueChange={setConfirmed} trackColor={{ true: colours.sage, false: colours.line }} />
                 <Text style={[type.body, { flex: 1 }]}>Everyone present has agreed to this meeting being recorded.</Text>
             </View>
 
             {problems.length > 0 && <Notice tone="warning">{problems.join('\n')}</Notice>}
             {error && <Notice tone="error">{error}</Notice>}
-            <Button label="Start recording" variant="danger" onPress={start} busy={busy} disabled={problems.length > 0 || extra.trim() !== '' || !api} />
+            <Button label="Start recording" icon="mic" onPress={start} busy={busy} disabled={problems.length > 0 || extra.trim() !== '' || !api} />
             <Text style={type.small}>You need a connection to start. Once started, recording carries on with the screen locked and uploads later if you go offline.</Text>
         </Screen>
     );
 }
 
 const styles = StyleSheet.create({
+    intro: { alignItems: 'center', gap: space.l, marginBottom: space.s },
+    confirmation: { padding: 18, borderRadius: 18, borderWidth: 1, borderColor: colours.line, backgroundColor: colours.sageTint },
     row: { flexDirection: 'row', alignItems: 'center', gap: space.m },
     remove: { width: 44, height: 44, alignItems: 'center', justifyContent: 'center' },
     input: { flex: 1, borderWidth: 1, borderColor: colours.line, borderRadius: 8, padding: space.m, fontSize: 17, backgroundColor: colours.surface },

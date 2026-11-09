@@ -2,7 +2,7 @@ import { Alert, Text, View } from 'react-native';
 import type { FileJob, Job } from '../src/core/uploadQueue';
 import { megabytes } from '../src/core/time';
 import { useApp, useQueue } from '../src/ui/AppState';
-import { Button, Card, Notice, Screen } from '../src/ui/components';
+import { Button, Card, Icon, Notice, Screen } from '../src/ui/components';
 import { colours, space, type } from '../src/ui/theme';
 
 const describe = (j: Job) => {
@@ -28,16 +28,17 @@ export default function Uploads() {
     }
 
     return (
-        <Screen>
+        <Screen navigation="uploads">
+            <View style={{ gap: space.s }}><Text style={type.title} accessibilityRole="header">Uploads</Text><Text style={type.body}>Your conversations, ready for the next step.</Text></View>
             {snapshot.blocked === 'unpaired' && <Notice tone="error">This phone is no longer connected. Pair it again; nothing waiting here has been lost.</Notice>}
             {snapshot.jobs.length === 0 ? (
-                <Notice>Everything has been uploaded. Review the transcript and suggested notes on your computer — it can take a few minutes.</Notice>
+                <Card style={{ alignItems: 'center', paddingVertical: 36 }}><Icon name="check" size={42} /><Text style={type.heading}>You are all caught up</Text><Text style={[type.small, { textAlign: 'center' }]}>Nothing is waiting on this phone. Review uploaded recordings in the web app; processing can take a few minutes.</Text></Card>
             ) : (
                 <Text style={type.body}>Recordings are kept on this phone until the server confirms it has them. You can close the app; uploads continue next time it is open.</Text>
             )}
             {[...byRecording.entries()].map(([recordingId, jobs]) => (
                 <Card key={recordingId}>
-                    <Text style={type.heading}>{jobs[0]!.meetingLabel}</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 14 }}><Icon name="upload" size={30} /><View style={{ flex: 1 }}><Text style={type.heading}>{jobs[0]!.meetingLabel}</Text><Text style={[type.small, { color: colours.sage }]}>{jobs.some(j => j.status === 'sending') ? 'Uploading' : jobs.some(j => j.status === 'failed') ? 'Needs your attention' : 'Ready to upload'}</Text></View></View>
                     {jobs.map((j) => (
                         <View key={j.id} style={{ gap: space.xs }}>
                             <Text style={type.body}>{describe(j)}</Text>
@@ -50,6 +51,7 @@ export default function Uploads() {
                 </Card>
             ))}
             {snapshot.jobs.length > 0 && <Button label={snapshot.running ? 'Uploading…' : 'Try again now'} variant="secondary" busy={snapshot.running && snapshot.jobs.some((j) => j.status === 'sending')} onPress={() => void queue.retryAll().then(() => queue.run())} />}
+            {snapshot.jobs.length > 0 && <View style={{ flexDirection: 'row', gap: 12, alignItems: 'center', padding: 18, borderRadius: 18, backgroundColor: colours.sageTint }}><Icon name="wifi" /><Text style={[type.small, { flex: 1 }]}>Uploads resume when you reconnect and the app is open.</Text></View>}
         </Screen>
     );
 }

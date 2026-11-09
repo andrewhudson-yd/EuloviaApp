@@ -1,12 +1,13 @@
 import { useAudioRecorder } from 'expo-audio';
-import { router, useLocalSearchParams, usePreventRemove } from 'expo-router';
+import { router, Stack, useLocalSearchParams, usePreventRemove } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import { useEffect, useRef, useState } from 'react';
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { Alert, Image, StyleSheet, Text, View } from 'react-native';
 import { RecordingSession } from '../../src/core/recordingSession';
 import { clock } from '../../src/core/time';
 import { disableRecordingAudioMode, enableRecordingAudioMode, expoRecorder, SPEECH_RECORDING } from '../../src/platform/recorder';
 import { useApp } from '../../src/ui/AppState';
-import { Button, Card, Notice, Screen } from '../../src/ui/components';
+import { Button, Icon, Notice, Screen } from '../../src/ui/components';
 import { colours, space, type } from '../../src/ui/theme';
 
 type Phase = 'starting' | 'startFailed' | 'recording' | 'saving' | 'saveFailed' | 'saved';
@@ -134,29 +135,46 @@ export default function Record() {
     };
 
     return (
-        <Screen>
-            <Text accessibilityRole="header" style={type.title}>{meetingLabel}</Text>
-            <Card style={styles.card}>
-                <Text style={type.heading}>{status[phase]}</Text>
+        <Screen dark>
+            <Stack.Screen options={{ headerTitle: 'Recording meeting', headerStyle: { backgroundColor: colours.sageDark }, headerTintColor: colours.ivory, headerTitleStyle: { color: colours.ivory }, headerBackVisible: false }} />
+            <StatusBar style="light" />
+            <View style={styles.card}>
+                <Image source={require('../../assets/brand-mark.png')} style={styles.brandMark} accessible={false} />
+                <Text accessibilityRole="header" style={styles.meetingTitle}>{meetingLabel}</Text>
+                <View style={styles.wave} accessible={false}>
+                    {[10, 19, 30, 16, 40, 24, 52, 30, 14, 34, 48, 25, 58, 35, 18, 42, 30, 50, 22, 36, 16, 28, 12].map((height, index) => <View key={index} style={[styles.waveBar, { height, opacity: phase === 'recording' && !paused && !interrupted ? 1 : 0.35 }]} />)}
+                </View>
                 <Text style={styles.clock} accessibilityLabel={`Recorded ${clock(elapsed)}`}>{clock(elapsed)}</Text>
-                {phase === 'recording' && !paused && !interrupted && <Text style={type.small}>You can lock your phone while recording.</Text>}
-            </Card>
+                <View style={styles.statusRow}><View style={[styles.dot, { backgroundColor: phase === 'recording' && !paused && !interrupted ? '#E7A89E' : colours.stone }]} /><Text style={styles.statusText}>{status[phase]}</Text></View>
+            </View>
             {interrupted && phase === 'recording' && <Notice tone="warning">The microphone was interrupted. Resume when you’re ready.</Notice>}
             {error && <Notice tone="error">{error}</Notice>}
             {phase === 'startFailed' && <Button label="Try microphone again" onPress={() => void begin()} />}
+            {phase === 'startFailed' && <Button label="Back to meetings" variant="outlineLight" onPress={() => router.replace('/meetings')} />}
             {phase === 'recording' && (
                 <View style={styles.actions}>
-                    <Button label={paused || interrupted ? 'Resume' : 'Pause'} variant="secondary" onPress={togglePause} />
-                    <Button label="Finish recording" variant="danger" onPress={confirmStop} />
+                    <Button label={paused || interrupted ? 'Resume' : 'Pause'} icon={paused || interrupted ? 'mic' : 'pause'} variant="outlineLight" onPress={togglePause} />
+                    <Button label="Finish recording" icon="stop" variant="light" onPress={confirmStop} />
                 </View>
             )}
-            {phase === 'saveFailed' && <Button label="Try saving again" onPress={() => void save()} />}
+            {phase === 'saveFailed' && <Button label="Try saving again" variant="light" onPress={() => void save()} />}
+            <View style={styles.localNote}><Icon name="mic" size={17} colour={colours.ivory} /><Text style={styles.note}>Recording files are saved on this phone.</Text></View>
+            {phase === 'recording' && !paused && !interrupted && <Text style={[styles.note, { textAlign: 'center' }]}>You can lock your phone. Stay present in the conversation.</Text>}
         </Screen>
     );
 }
 
 const styles = StyleSheet.create({
-    card: { alignItems: 'center', paddingVertical: space.xl },
-    clock: { fontSize: 52, fontVariant: ['tabular-nums'], color: colours.charcoal },
+    card: { alignItems: 'center', paddingVertical: space.xl, gap: 24 },
+    clock: { fontSize: 52, fontWeight: '500', fontVariant: ['tabular-nums'], letterSpacing: -2, color: colours.ivory },
     actions: { gap: space.m },
+    brandMark: { width: 44, height: 55, tintColor: colours.ivory },
+    meetingTitle: { fontSize: 23, fontWeight: '600', color: colours.ivory, textAlign: 'center', letterSpacing: -0.4 },
+    wave: { height: 64, flexDirection: 'row', gap: 5, alignItems: 'center', justifyContent: 'center', marginVertical: 8 },
+    waveBar: { width: 3, borderRadius: 2, backgroundColor: colours.stone },
+    statusRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+    dot: { width: 7, height: 7, borderRadius: 4 },
+    statusText: { fontSize: 13, color: colours.ivory },
+    localNote: { flexDirection: 'row', gap: 8, alignItems: 'center', justifyContent: 'center' },
+    note: { fontSize: 12, lineHeight: 19, color: colours.ivory },
 });
