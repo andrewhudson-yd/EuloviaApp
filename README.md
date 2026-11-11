@@ -33,8 +33,8 @@ The **release** builds include everything, so the app works on its own, away fro
 these for real meetings. `npm run ios` / `npm run android` make development builds instead, which load the
 app's code live from your computer (it must stay on the same Wi-Fi), for working on the app itself.
 
-**iPhone:** in Xcode → Settings → Accounts, add your Apple ID (a free one works). Change
-`ios.bundleIdentifier` in `app.json` to something of your own (e.g. `uk.co.yourbusiness.companion`). Plug
+**iPhone:** in Xcode → Settings → Accounts, add your Apple ID (a free one works). Use the bundle ID
+`uk.co.dotlogics.eulovia` configured in `app.json`. Plug
 the phone in, unlock it and tap "Trust". The first time, turn on Settings → Privacy & Security →
 **Developer Mode** (the phone restarts), and after installing, trust yourself as a developer in Settings
 → General → VPN & Device Management. With a free Apple ID the app stops opening after 7 days — run
@@ -59,8 +59,8 @@ longer applies). The "unknown warning group" and "@deprecated" warnings are harm
 ## Build for the App Store and Google Play (EAS)
 
 1. Create an Expo account and install the CLI: `npm i -g eas-cli`, `eas login`.
-2. Set your own identifiers in `app.json` — `ios.bundleIdentifier` and `android.package` are placeholders
-   (`com.example.celebrantcompanion`).
+2. Use the configured iOS bundle ID `uk.co.dotlogics.eulovia`. Set `android.package` in `app.json`
+   before building for Google Play, as it still uses `com.example.celebrantcompanion`.
 3. `eas init` (links the project), then:
    - `eas build --profile preview --platform all` — installable test builds (TestFlight / internal);
    - `eas build --profile production --platform all` and `eas submit` — store builds.

@@ -10,7 +10,7 @@
     "backgroundColor": "#F8F6F2",
     "ios": {
       "icon": "./assets/icon.png",
-      "bundleIdentifier": "com.example.celebrantcompanion",
+      "bundleIdentifier": "uk.co.dotlogics.eulovia",
       "supportsTablet": false,
       "config": { "usesNonExemptEncryption": false },
       "infoPlist": {
