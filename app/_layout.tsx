@@ -12,7 +12,7 @@ export default function RootLayout() {
                 <StatusBar style="dark" />
                 <Stack
                     screenOptions={{
-                        headerStyle: { backgroundColor: colours.ivory },
+                        headerStyle: { backgroundColor: colours.sageTint },
                         headerTintColor: colours.sage,
                         headerTitleStyle: { color: colours.charcoal },
                         headerShadowVisible: false,
@@ -24,6 +24,7 @@ export default function RootLayout() {
                     <Stack.Screen name="pair" options={{ title: 'Connect to your practice', headerBackVisible: false }} />
                     <Stack.Screen name="meetings" options={{ title: 'Your meetings', headerBackVisible: false }} />
                     <Stack.Screen name="meeting/[id]" options={{ title: 'Before you record' }} />
+                    <Stack.Screen name="new-recording" options={{ title: 'New recording' }} />
                     <Stack.Screen name="record/[id]" options={{ title: 'Recording', headerBackVisible: false, gestureEnabled: false }} />
                     <Stack.Screen name="uploads" options={{ title: 'Uploads', headerBackVisible: false }} />
                     <Stack.Screen name="settings" options={{ title: 'Settings', headerBackVisible: false }} />

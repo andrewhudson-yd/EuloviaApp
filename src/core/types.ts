@@ -15,7 +15,7 @@ export interface Profile {
 
 export interface RecordingSummary {
     id: string;
-    meeting_id: string;
+    meeting_id: string | null;
     status: string;
     status_label: string;
     started_at: string;
@@ -35,6 +35,12 @@ export interface MeetingItem {
     held: boolean;
     family: Array<{ name: string; relationship: string | null }>;
     recordings: RecordingSummary[];
+}
+
+export interface ServiceItem {
+    id: string;
+    name: string;
+    service_date: string | null;
 }
 
 export interface Attendee {

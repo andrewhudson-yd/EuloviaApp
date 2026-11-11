@@ -1,4 +1,4 @@
-import type { Attendee, FileKind, MeetingItem, Profile, RecordingSummary } from './types';
+import type { Attendee, FileKind, MeetingItem, Profile, RecordingSummary, ServiceItem } from './types';
 
 export type Fetch = (input: string, init?: { method?: string; headers?: Record<string, string>; body?: string | Uint8Array }) => Promise<{
     ok: boolean;
@@ -65,8 +65,20 @@ export class CompanionApi {
         return (await this.request<{ meetings: MeetingItem[] }>('GET', '/meetings')).meetings;
     }
 
+    async services(): Promise<ServiceItem[]> {
+        return (await this.request<{ services: ServiceItem[] }>('GET', '/services')).services;
+    }
+
     async startRecording(meetingId: string, attendees: Attendee[], startedAt: string, scriptVersion: number): Promise<RecordingSummary> {
-        return (await this.request<{ recording: RecordingSummary }>('POST', `/meetings/${meetingId}/recordings`, {
+        return this.createRecording(`/meetings/${meetingId}/recordings`, attendees, startedAt, scriptVersion);
+    }
+
+    async startServiceRecording(serviceId: string, attendees: Attendee[], startedAt: string, scriptVersion: number): Promise<RecordingSummary> {
+        return this.createRecording(`/services/${serviceId}/recordings`, attendees, startedAt, scriptVersion);
+    }
+
+    private async createRecording(path: string, attendees: Attendee[], startedAt: string, scriptVersion: number): Promise<RecordingSummary> {
+        return (await this.request<{ recording: RecordingSummary }>('POST', path, {
             started_at: startedAt,
             consent: { confirmed: true, script_version: scriptVersion, attendees },
         })).recording;

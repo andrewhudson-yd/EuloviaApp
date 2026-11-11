@@ -139,7 +139,7 @@ export default function Record() {
             <Stack.Screen options={{ headerTitle: 'Recording meeting', headerStyle: { backgroundColor: colours.sageDark }, headerTintColor: colours.ivory, headerTitleStyle: { color: colours.ivory }, headerBackVisible: false }} />
             <StatusBar style="light" />
             <View style={styles.card}>
-                <Image source={require('../../assets/brand-mark.png')} style={styles.brandMark} accessible={false} />
+                <Image source={require('../../assets/eulovia-mark.png')} style={styles.brandMark} accessible={false} />
                 <Text accessibilityRole="header" style={styles.meetingTitle}>{meetingLabel}</Text>
                 <View style={styles.wave} accessible={false}>
                     {[10, 19, 30, 16, 40, 24, 52, 30, 14, 34, 48, 25, 58, 35, 18, 42, 30, 50, 22, 36, 16, 28, 12].map((height, index) => <View key={index} style={[styles.waveBar, { height, opacity: phase === 'recording' && !paused && !interrupted ? 1 : 0.35 }]} />)}
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     card: { alignItems: 'center', paddingVertical: space.xl, gap: 24 },
     clock: { fontSize: 52, fontWeight: '500', fontVariant: ['tabular-nums'], letterSpacing: -2, color: colours.ivory },
     actions: { gap: space.m },
-    brandMark: { width: 44, height: 55, tintColor: colours.ivory },
+    brandMark: { width: 55, height: 55 },
     meetingTitle: { fontSize: 23, fontWeight: '600', color: colours.ivory, textAlign: 'center', letterSpacing: -0.4 },
     wave: { height: 64, flexDirection: 'row', gap: 5, alignItems: 'center', justifyContent: 'center', marginVertical: 8 },
     waveBar: { width: 3, borderRadius: 2, backgroundColor: colours.stone },

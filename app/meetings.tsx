@@ -54,8 +54,8 @@ export default function Meetings() {
             {offline && <Notice tone="warning">No connection. Showing the meetings saved on this phone. Recordings will upload when you are back online.</Notice>}
             <View style={styles.intro}>
                 <Text accessibilityRole="header" style={type.title}>Your meetings</Text>
-                <Text style={type.body}>Be present. Capture what matters.</Text>
             </View>
+            {profile?.companion.enabled && <Button label="New recording" icon="mic" onPress={() => router.push('/new-recording')} />}
             {profile && <View style={styles.practice}><Icon name="folder" /><View style={{ flex: 1 }}><Text style={type.heading}>{profile.practice.name}</Text><Text style={type.small}>Your celebrancy practice</Text></View></View>}
             {error && <Notice tone="error">{error}</Notice>}
             {pending > 0 && <Button
@@ -66,7 +66,7 @@ export default function Meetings() {
             />}
             {meetings === null && !error && <Text style={type.small}>Loading your meetings…</Text>}
             {meetings !== null && meetings.length === 0 && (
-                <Notice>No family meetings in the last or next two weeks. Arrange one from the funeral’s page on your computer.</Notice>
+                <Notice>No family meetings in the last or next two weeks.</Notice>
             )}
             {groups.filter(([, list]) => list.length).map(([title, list]) => (
                 <View key={title} style={{ gap: space.s }}>

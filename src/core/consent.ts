@@ -1,6 +1,7 @@
 import type { Attendee } from './types';
 
 export const CONSENT_SCRIPT_VERSION = 1;
+export const SHORT_CONSENT_SCRIPT_VERSION = 2;
 
 /** Read aloud before recording. Kept short and plain on purpose. */
 export function consentScript(practiceName: string): string {

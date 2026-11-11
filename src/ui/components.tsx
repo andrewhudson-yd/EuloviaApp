@@ -20,7 +20,9 @@ export function Icon({ name, size = 24, colour = colours.sage }: { name: IconNam
 export function Brand({ light = false }: { light?: boolean }) {
     return (
         <View style={styles.brand} accessibilityLabel="Eulovia" accessible>
-            <Image source={require('../../assets/brand-mark.png')} style={[styles.brandMark, light && { tintColor: colours.ivory }]} accessible={false} />
+            <View style={styles.brandTile}>
+                <Image source={require('../../assets/eulovia-mark.png')} style={styles.brandMark} accessible={false} />
+            </View>
             <Text style={[styles.wordmark, light && { color: colours.ivory }]}>Eulovia</Text>
         </View>
     );
@@ -102,7 +104,8 @@ const styles = StyleSheet.create({
     buttonText: { fontSize: 16, fontWeight: '600', flexShrink: 1, textAlign: 'center' },
     notice: { borderRadius: 16, padding: space.l },
     brand: { flexDirection: 'row', gap: 7, alignItems: 'center' },
-    brandMark: { width: 23, height: 30 },
+    brandTile: { width: 36, height: 36, borderRadius: 10, borderWidth: 1, borderColor: colours.gold, backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center' },
+    brandMark: { width: 28, height: 28 },
     wordmark: { fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif', fontSize: 27, letterSpacing: -0.7, color: colours.sage },
     navigation: { flexDirection: 'row', paddingTop: 10, paddingHorizontal: 18, borderTopWidth: 1, borderTopColor: colours.line, backgroundColor: colours.ivory },
     navItem: { flex: 1, minHeight: 54, gap: 5, alignItems: 'center', justifyContent: 'center', borderRadius: 14 },

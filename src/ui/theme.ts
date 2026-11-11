@@ -1,10 +1,11 @@
-/** Same palette as the web app: ivory, sage, stone, charcoal. */
+/** Same palette as the web app: warm paper, Mist blue, slate, and rosemary gold. */
 export const colours = {
-    ivory: '#F8F6F2',
+    ivory: '#F7F3ED',
     surface: '#FFFDF9',
-    sage: '#344F49',
-    sageDark: '#26403A',
-    sageTint: '#EAF0EE',
+    sage: '#3E5669',
+    sageDark: '#304654',
+    sageTint: '#E3EAEE',
+    gold: '#E6B866',
     stone: '#B5A18B',
     stoneInk: '#75634F',
     line: '#E7E2DA',
