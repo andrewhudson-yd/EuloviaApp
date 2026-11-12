@@ -1,29 +1,32 @@
-/** Same palette as the web app: warm paper, Mist blue, slate, and rosemary gold. */
+/** Shared Eulovia palette, with darker plum and bronze for legible text and controls. */
 export const colours = {
-    ivory: '#F7F3ED',
+    ivory: '#F8F5EF',
     surface: '#FFFDF9',
-    sage: '#3E5669',
-    sageDark: '#304654',
-    sageTint: '#E3EAEE',
-    gold: '#E6B866',
-    stone: '#B5A18B',
-    stoneInk: '#75634F',
+    sage: '#614C61',
+    sageDark: '#403C4A',
+    sageTint: '#F1EBF3',
+    mutedSage: '#A8B7A1',
+    lavender: '#D7CDE1',
+    stone: '#B58D6A',
+    stoneInk: '#6B5A47',
     line: '#E7E2DA',
-    charcoal: '#292B2A',
-    muted: '#5E625F',
+    charcoal: '#403C4A',
+    muted: '#625B62',
     attention: '#9B2C2C',
     attentionTint: '#FBEAEA',
     waiting: '#8A5A00',
     waitingTint: '#FFF4DD',
-    positive: '#2F6B3F',
+    positive: '#3F513C',
     recording: '#B3261E',
 };
 
 export const space = { xs: 4, s: 8, m: 12, l: 16, xl: 24, xxl: 32 };
 
+export const font = { display: 'DMSerifDisplay_400Regular', body: 'Inter_400Regular', semibold: 'Inter_600SemiBold' };
+
 export const type = {
-    title: { fontSize: 30, lineHeight: 38, letterSpacing: -0.8, fontWeight: '600' as const, color: colours.charcoal },
-    heading: { fontSize: 18, fontWeight: '600' as const, color: colours.charcoal },
-    body: { fontSize: 16, lineHeight: 25, color: colours.charcoal },
-    small: { fontSize: 13, lineHeight: 20, color: colours.muted },
+    title: { fontFamily: font.display, fontSize: 32, lineHeight: 39, letterSpacing: -0.5, color: colours.charcoal },
+    heading: { fontFamily: font.display, fontSize: 20, lineHeight: 25, color: colours.charcoal },
+    body: { fontFamily: font.body, fontSize: 16, lineHeight: 25, color: colours.charcoal },
+    small: { fontFamily: font.body, fontSize: 13, lineHeight: 20, color: colours.muted },
 };

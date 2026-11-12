@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
-import { ActivityIndicator, Image, Platform, Pressable, ScrollView, StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
+import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { colours, space, type } from './theme';
+import { colours, font, space, type } from './theme';
 
 const iconAssets = {
     calendar: require('../../assets/icons/calendar.png'), mic: require('../../assets/icons/mic.png'),
@@ -20,10 +20,8 @@ export function Icon({ name, size = 24, colour = colours.sage }: { name: IconNam
 export function Brand({ light = false }: { light?: boolean }) {
     return (
         <View style={styles.brand} accessibilityLabel="Eulovia" accessible>
-            <View style={styles.brandTile}>
-                <Image source={require('../../assets/eulovia-mark.png')} style={styles.brandMark} accessible={false} />
-            </View>
-            <Text style={[styles.wordmark, light && { color: colours.ivory }]}>Eulovia</Text>
+            <Image source={light ? require('../../assets/eulovia-mark-light.png') : require('../../assets/eulovia-mark.png')} style={styles.brandMark} accessible={false} />
+            <Text style={[styles.wordmark, light && { color: colours.ivory }]}>eulovia</Text>
         </View>
     );
 }
@@ -43,7 +41,7 @@ export function BottomNav({ active }: { active: Tab }) {
                     onPress={() => { if (active !== tab.key) router.replace(`/${tab.key}`); }}
                     style={({ pressed }) => [styles.navItem, active === tab.key && styles.navActive, pressed && { opacity: 0.7 }]}>
                     <Icon name={tab.icon} size={23} colour={active === tab.key ? colours.sage : colours.muted} />
-                    <Text style={[styles.navLabel, active === tab.key && { color: colours.sage, fontWeight: '600' }]}>{tab.label}</Text>
+                    <Text style={[styles.navLabel, active === tab.key && { color: colours.sageDark, fontFamily: font.semibold }]}>{tab.label}</Text>
                 </Pressable>
             ))}
         </View>
@@ -101,14 +99,13 @@ const styles = StyleSheet.create({
     content: { padding: space.xl, gap: space.xl, width: '100%', maxWidth: 680, alignSelf: 'center' },
     card: { backgroundColor: colours.surface, borderRadius: 20, borderWidth: 1, borderColor: colours.line, padding: 22, gap: space.m, shadowColor: colours.sageDark, shadowOffset: { width: 0, height: 3 }, shadowOpacity: 0.04, shadowRadius: 8, elevation: 1 },
     button: { minHeight: 54, borderRadius: 100, paddingHorizontal: space.xl, paddingVertical: 12, flexDirection: 'row', gap: 10, alignItems: 'center', justifyContent: 'center' },
-    buttonText: { fontSize: 16, fontWeight: '600', flexShrink: 1, textAlign: 'center' },
+    buttonText: { fontFamily: font.semibold, fontSize: 16, flexShrink: 1, textAlign: 'center' },
     notice: { borderRadius: 16, padding: space.l },
     brand: { flexDirection: 'row', gap: 7, alignItems: 'center' },
-    brandTile: { width: 36, height: 36, borderRadius: 10, borderWidth: 1, borderColor: colours.gold, backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center' },
-    brandMark: { width: 28, height: 28 },
-    wordmark: { fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif', fontSize: 27, letterSpacing: -0.7, color: colours.sage },
+    brandMark: { width: 37, height: 37 },
+    wordmark: { fontFamily: font.display, fontSize: 29, letterSpacing: -0.5, color: colours.charcoal },
     navigation: { flexDirection: 'row', paddingTop: 10, paddingHorizontal: 18, borderTopWidth: 1, borderTopColor: colours.line, backgroundColor: colours.ivory },
     navItem: { flex: 1, minHeight: 54, gap: 5, alignItems: 'center', justifyContent: 'center', borderRadius: 14 },
-    navActive: { backgroundColor: colours.sageTint },
-    navLabel: { fontSize: 10, color: colours.muted },
+    navActive: { backgroundColor: colours.lavender },
+    navLabel: { fontFamily: font.body, fontSize: 11, color: colours.muted },
 });

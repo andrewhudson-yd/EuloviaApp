@@ -1,20 +1,27 @@
+import { DMSerifDisplay_400Regular } from '@expo-google-fonts/dm-serif-display/400Regular';
+import { Inter_400Regular } from '@expo-google-fonts/inter/400Regular';
+import { Inter_600SemiBold } from '@expo-google-fonts/inter/600SemiBold';
+import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AppStateProvider } from '../src/ui/AppState';
-import { colours } from '../src/ui/theme';
+import { colours, font } from '../src/ui/theme';
 import { Brand } from '../src/ui/components';
 
 export default function RootLayout() {
+    const [fontsLoaded, fontError] = useFonts({ DMSerifDisplay_400Regular, Inter_400Regular, Inter_600SemiBold });
+    if (!fontsLoaded && !fontError) return null;
+
     return (
         <SafeAreaProvider>
             <AppStateProvider>
                 <StatusBar style="dark" />
                 <Stack
                     screenOptions={{
-                        headerStyle: { backgroundColor: colours.sageTint },
+                        headerStyle: { backgroundColor: colours.ivory },
                         headerTintColor: colours.sage,
-                        headerTitleStyle: { color: colours.charcoal },
+                        headerTitleStyle: { color: colours.charcoal, fontFamily: font.display },
                         headerShadowVisible: false,
                         headerTitle: () => <Brand />,
                         contentStyle: { backgroundColor: colours.ivory },

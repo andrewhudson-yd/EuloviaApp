@@ -7,7 +7,7 @@
     "icon": "./assets/eulovia-icon.png",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
-    "backgroundColor": "#F7F3ED",
+    "backgroundColor": "#F8F5EF",
     "ios": {
       "icon": "./assets/eulovia-icon.png",
       "bundleIdentifier": "uk.co.dotlogics.eulovia",
@@ -22,7 +22,7 @@
       "icon": "./assets/eulovia-icon.png",
       "adaptiveIcon": {
         "foregroundImage": "./assets/eulovia-adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#403C4A"
       },
       "package": "com.example.celebrantcompanion",
       "allowBackup": false,
@@ -34,7 +34,7 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#F7F3ED",
+          "backgroundColor": "#F8F5EF",
           "image": "./assets/eulovia-mark.png",
           "imageWidth": 96
         }
