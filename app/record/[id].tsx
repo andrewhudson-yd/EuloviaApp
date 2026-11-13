@@ -24,7 +24,7 @@ export default function Record() {
     const [interrupted, setInterrupted] = useState(false);
     const [elapsed, setElapsed] = useState(0);
     const [error, setError] = useState<string | null>(null);
-    const meetingLabel = label ?? 'Family meeting';
+    const meetingLabel = label ?? 'Recording';
 
     usePreventRemove(phase === 'starting' || phase === 'recording' || phase === 'saving' || phase === 'saveFailed', () => {
         Alert.alert('Recording in progress', 'Save the recording before leaving this screen.');
@@ -37,7 +37,7 @@ export default function Record() {
         setError(null);
         try {
             await enableRecordingAudioMode();
-            const partMs = (profile?.companion.part_minutes ?? 30) * 60_000;
+            const partMs = Math.min(profile?.companion.part_minutes ?? 20, 20) * 60_000;
             const recording = new RecordingSession(id, expoRecorder(recorder), partMs, async (part) => {
                 await queue.addFile({ recordingId: id, meetingLabel, kind: 'part', position: part.position, uri: part.uri, durationMs: part.durationMs, offsetMs: part.offsetMs });
                 void queue.run();
@@ -136,7 +136,7 @@ export default function Record() {
 
     return (
         <Screen dark>
-            <Stack.Screen options={{ headerTitle: 'Recording meeting', headerStyle: { backgroundColor: colours.sageDark }, headerTintColor: colours.ivory, headerTitleStyle: { color: colours.ivory }, headerBackVisible: false }} />
+            <Stack.Screen options={{ headerTitle: 'Recording', headerStyle: { backgroundColor: colours.sageDark }, headerTintColor: colours.ivory, headerTitleStyle: { color: colours.ivory }, headerBackVisible: false }} />
             <StatusBar style="light" />
             <View style={styles.card}>
                 <Image source={require('../../assets/eulovia-mark-light.png')} style={styles.brandMark} accessible={false} />
@@ -150,7 +150,7 @@ export default function Record() {
             {interrupted && phase === 'recording' && <Notice tone="warning">The microphone was interrupted. Resume when you’re ready.</Notice>}
             {error && <Notice tone="error">{error}</Notice>}
             {phase === 'startFailed' && <Button label="Try microphone again" onPress={() => void begin()} />}
-            {phase === 'startFailed' && <Button label="Back to meetings" variant="outlineLight" onPress={() => router.replace('/meetings')} />}
+            {phase === 'startFailed' && <Button label="Back to diary" variant="outlineLight" onPress={() => router.replace('/meetings')} />}
             {phase === 'recording' && (
                 <View style={styles.actions}>
                     <Button label={paused || interrupted ? 'Resume' : 'Pause'} icon={paused || interrupted ? 'mic' : 'pause'} variant="outlineLight" onPress={togglePause} />

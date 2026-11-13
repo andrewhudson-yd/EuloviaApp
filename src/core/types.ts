@@ -43,6 +43,22 @@ export interface ServiceItem {
     service_date: string | null;
 }
 
+export interface DiaryEvent {
+    id: string;
+    title: string;
+    type_label: string;
+    local_date: string;
+    end_date: string;
+    local_time: string | null;
+    location: string | null;
+    meeting_id: string | null;
+}
+
+export interface DiaryMonth {
+    events: DiaryEvent[];
+    meetings: MeetingItem[];
+}
+
 export interface Attendee {
     name: string;
     relationship: string | null;

@@ -1,4 +1,4 @@
-import type { Attendee, FileKind, MeetingItem, Profile, RecordingSummary, ServiceItem } from './types';
+import type { Attendee, DiaryMonth, FileKind, MeetingItem, Profile, RecordingSummary, ServiceItem } from './types';
 
 export type Fetch = (input: string, init?: { method?: string; headers?: Record<string, string>; body?: string | Uint8Array }) => Promise<{
     ok: boolean;
@@ -67,6 +67,14 @@ export class CompanionApi {
 
     async services(): Promise<ServiceItem[]> {
         return (await this.request<{ services: ServiceItem[] }>('GET', '/services')).services;
+    }
+
+    diary(month: string): Promise<DiaryMonth> {
+        return this.request('GET', `/diary?month=${encodeURIComponent(month)}`);
+    }
+
+    startStandaloneRecording(startedAt: string, scriptVersion: number): Promise<RecordingSummary> {
+        return this.createRecording('/recordings', [], startedAt, scriptVersion);
     }
 
     async startRecording(meetingId: string, attendees: Attendee[], startedAt: string, scriptVersion: number): Promise<RecordingSummary> {

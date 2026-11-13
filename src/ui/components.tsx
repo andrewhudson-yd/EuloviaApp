@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import { useApp } from './AppState';
 import { colours, font, space, type } from './theme';
 
 const iconAssets = {
@@ -29,21 +30,28 @@ export function Brand({ light = false }: { light?: boolean }) {
 type Tab = 'meetings' | 'uploads' | 'settings';
 export function BottomNav({ active }: { active: Tab }) {
     const insets = useSafeAreaInsets();
-    const tabs: Array<{ key: Tab; label: string; icon: IconName }> = [
-        { key: 'meetings', label: 'Meetings', icon: 'calendar' },
-        { key: 'uploads', label: 'Uploads', icon: 'upload' },
-        { key: 'settings', label: 'Settings', icon: 'settings' },
-    ];
+    const { profile } = useApp();
+    const recordingDisabled = profile?.companion.enabled === false;
+    const tabButton = (tab: Tab, label: string, icon: IconName) => (
+        <Pressable accessibilityRole="tab" accessibilityState={{ selected: active === tab }}
+            onPress={() => { if (active !== tab) router.replace(`/${tab}`); }}
+            style={({ pressed }) => [styles.navItem, active === tab && styles.navActive, pressed && { opacity: 0.7 }]}>
+            <Icon name={icon} size={23} colour={active === tab ? colours.sage : colours.muted} />
+            <Text style={[styles.navLabel, active === tab && { color: colours.sageDark, fontFamily: font.semibold }]}>{label}</Text>
+        </Pressable>
+    );
     return (
-        <View accessibilityRole="tablist" style={[styles.navigation, { paddingBottom: Math.max(insets.bottom, 12) }]}>
-            {tabs.map(tab => (
-                <Pressable key={tab.key} accessibilityRole="tab" accessibilityState={{ selected: active === tab.key }}
-                    onPress={() => { if (active !== tab.key) router.replace(`/${tab.key}`); }}
-                    style={({ pressed }) => [styles.navItem, active === tab.key && styles.navActive, pressed && { opacity: 0.7 }]}>
-                    <Icon name={tab.icon} size={23} colour={active === tab.key ? colours.sage : colours.muted} />
-                    <Text style={[styles.navLabel, active === tab.key && { color: colours.sageDark, fontFamily: font.semibold }]}>{tab.label}</Text>
-                </Pressable>
-            ))}
+        <View style={[styles.navigation, { paddingBottom: Math.max(insets.bottom, 12), paddingLeft: 12 + insets.left, paddingRight: 12 + insets.right }]}>
+            <View style={styles.navSide}>{tabButton('meetings', 'Diary', 'calendar')}</View>
+            <Pressable accessibilityRole="button" accessibilityLabel="New recording"
+                accessibilityState={{ disabled: recordingDisabled }}
+                disabled={recordingDisabled}
+                onPress={() => router.push('/new-recording')}
+                style={({ pressed }) => [styles.recordNav, (pressed || recordingDisabled) && { opacity: 0.6 }]}>
+                <View style={styles.recordCircle}><Icon name="mic" size={25} colour={colours.ivory} /></View>
+                <Text style={styles.navLabel}>Record</Text>
+            </Pressable>
+            <View style={styles.navSide}>{tabButton('uploads', 'Uploads', 'upload')}{tabButton('settings', 'Settings', 'settings')}</View>
         </View>
     );
 }
@@ -104,7 +112,10 @@ const styles = StyleSheet.create({
     brand: { flexDirection: 'row', gap: 7, alignItems: 'center' },
     brandMark: { width: 37, height: 37 },
     wordmark: { fontFamily: font.display, fontSize: 29, letterSpacing: -0.5, color: colours.charcoal },
-    navigation: { flexDirection: 'row', paddingTop: 10, paddingHorizontal: 18, borderTopWidth: 1, borderTopColor: colours.line, backgroundColor: colours.ivory },
+    navigation: { flexDirection: 'row', alignItems: 'center', paddingTop: 6, borderTopWidth: 1, borderTopColor: colours.line, backgroundColor: colours.ivory },
+    navSide: { flex: 1, flexDirection: 'row' },
+    recordNav: { width: 68, gap: 3, alignItems: 'center' },
+    recordCircle: { width: 52, height: 52, borderRadius: 26, backgroundColor: colours.recording, alignItems: 'center', justifyContent: 'center' },
     navItem: { flex: 1, minHeight: 54, gap: 5, alignItems: 'center', justifyContent: 'center', borderRadius: 14 },
     navActive: { backgroundColor: colours.lavender },
     navLabel: { fontFamily: font.body, fontSize: 11, color: colours.muted },

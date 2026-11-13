@@ -29,7 +29,7 @@ export default function RootLayout() {
                 >
                     <Stack.Screen name="index" options={{ headerShown: false }} />
                     <Stack.Screen name="pair" options={{ title: 'Connect to your practice', headerBackVisible: false }} />
-                    <Stack.Screen name="meetings" options={{ title: 'Your meetings', headerBackVisible: false }} />
+                    <Stack.Screen name="meetings" options={{ title: 'Diary', headerBackVisible: false }} />
                     <Stack.Screen name="meeting/[id]" options={{ title: 'Before you record' }} />
                     <Stack.Screen name="new-recording" options={{ title: 'New recording' }} />
                     <Stack.Screen name="record/[id]" options={{ title: 'Recording', headerBackVisible: false, gestureEnabled: false }} />
