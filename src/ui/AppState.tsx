@@ -74,10 +74,17 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     }, [connect]);
 
     const unpair = useCallback(async () => {
-        await api?.unpair().catch(() => {});
+        if (api) {
+            try {
+                await api.unpair();
+            } catch (error) {
+                if (!(error instanceof ApiError && error.kind === 'unpaired')) throw error;
+            }
+        }
         await clearCredentials();
         queue.setApi(null);
         setApi(null);
+        setProfile(null);
         setStatus('unpaired');
     }, [api]);
 
